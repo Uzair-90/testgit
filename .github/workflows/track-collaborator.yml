@@ -1,0 +1,23 @@
+name: Track Collaborator Changes
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  track-changes:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Log Collaborator Changes
+        run: |
+          # Log information about the changes and the user who made them
+          git log --pretty=format:'%h - %an, %ar : %s' ${{ github.event.before }}..${{ github.sha }} >> changes.log
+          
+          # Print the contents of the log file
+          cat changes.log
+
