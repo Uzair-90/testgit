@@ -19,8 +19,7 @@ jobs:
           collaborators=$(gh api repos/${{ github.repository }}/collaborators --jq '.[].email')
 
           # Log only commits made by collaborators
-          git log --pretty=format:'%h - %an, %ar : %s' ${{ github.event.before }}..${{ github.sha }} | grep -f <(echo 
-"$collaborators") >> changes.log
+          git log --pretty=format:'%h - %an, %ar : %s' ${{ github.event.before }}..${{ github.sha }} | grep -f <(echo "$collaborators") >> changes.log
 
           # Print the contents of the log file
           cat changes.log
