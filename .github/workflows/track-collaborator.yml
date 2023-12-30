@@ -16,7 +16,7 @@ jobs:
       - name: Log Collaborator Changes
         run: |
           # Log information about the changes and the user who made them
-          git log --pretty=format:'%h - %an, %ar : %s' ${{ github.event.before }}..${{ github.sha }} >> changes.log
+	  git log --pretty=format:'%h - %an, %ar : %s' ${{ github.event.before }}..${{ github.sha }} >> changes.log
           
           # Print the contents of the log file
           cat changes.log
