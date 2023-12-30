@@ -15,9 +15,19 @@ jobs:
 
       - name: Log Collaborator Changes
         run: |
-          # Log information about the changes and the user who made them
-	  git log --pretty=format:'%h - %an, %ar : %s' ${{ github.event.before }}..${{ github.sha }} >> changes.log
-          
+          # Get a list of collaborator emails
+          collaborators=$(gh api repos/${{ github.repository }}/collaborators --jq '.[].email')
+
+          # Log only commits made by collaborators
+          git log --pretty=format:'%h - %an, %ar : %s' ${{ github.event.before }}..${{ github.sha }} | grep -f <(echo 
+"$collaborators") >> changes.log
+
           # Print the contents of the log file
           cat changes.log
+
+      - name: Upload Log File
+        uses: actions/upload-artifact@v3
+        with:
+          name: collaborator-changes-log
+          path: changes.log
 
